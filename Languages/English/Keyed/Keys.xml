@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+    <VFED_SettingsCategory>VFED: Recruit As Assassination</VFED_SettingsCategory>
+    <VFED_Setting_CountRecruit>Count recruitment as assassination success</VFED_Setting_CountRecruit>
+    <VFED_Setting_CountRecruit_Desc>When an assassination target is recruited as a colonist, consider the assassination complete, granting mission rewards and advancing the plotline.</VFED_Setting_CountRecruit_Desc>
+    <VFED_Setting_CountEnslavement>Count enslavement as assassination success</VFED_Setting_CountEnslavement>
+    <VFED_Setting_CountEnslavement_Desc>If enabled, enslaving the assassination target as a slave will also count as a successful assassination.</VFED_Setting_CountEnslavement_Desc>
+    <VFED_Setting_PreventLeftMap>Prevent premature mission failure while in custody</VFED_Setting_PreventLeftMap>
+    <VFED_Setting_PreventLeftMap_Desc>Prevents the LeftMap failure signal from triggering when carrying a captured target in a player caravan, allowing you to bring them home safely to recruit.</VFED_Setting_PreventLeftMap_Desc>
+    <VFED_Setting_SendLetter>Send completion letter on recruitment</VFED_Setting_SendLetter>
+    <VFED_Setting_SendLetter_Desc>Sends a notification letter when the target is successfully recruited and the assassination quest completes.</VFED_Setting_SendLetter_Desc>
+
+    <VFED_TargetRecruitedLetterTitle>Assassination Target Recruited: {PAWN_nameDef}</VFED_TargetRecruitedLetterTitle>
+    <VFED_TargetRecruitedLetterText>The Imperial assassination target {PAWN_nameDef} ({TITLE}) has been recruited into our colony!\n\nThe Deserter Network considers this target permanently neutralized and removed from Imperial command. The mission is an overwhelming success, rewards have been granted, and further plot missions are now available.</VFED_TargetRecruitedLetterText>
+</LanguageData>

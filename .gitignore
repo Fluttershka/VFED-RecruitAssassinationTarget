@@ -1,0 +1,13 @@
+# Build artifacts in Source folder
+Source/**/bin/
+Source/**/obj/
+*.user
+*.suo
+.vs/
+.idea/
+*.DotSettings*
+
+# OS artifacts
+Thumbs.db
+[Dd]esktop.ini
+.DS_Store

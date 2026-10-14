@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+    <name>Vanilla Factions Expanded - Deserters: Recruit As Assassination</name>
+    <packageId>Kuwah.VFED.RecruitAssassinationTarget</packageId>
+    <author>Kuwah</author>
+    <supportedVersions>
+        <li>1.5</li>
+        <li>1.6</li>
+        <li>1.7</li>
+    </supportedVersions>
+    <modDependencies>
+        <li>
+            <packageId>brrainz.harmony</packageId>
+            <displayName>Harmony</displayName>
+            <steamWorkshopUrl>https://steamcommunity.com/workshop/filedetails/?id=2009463077</steamWorkshopUrl>
+        </li>
+        <li>
+            <packageId>OskarPotocki.VFE.Deserters</packageId>
+            <displayName>Vanilla Factions Expanded - Deserters</displayName>
+            <steamWorkshopUrl>https://steamcommunity.com/workshop/filedetails/?id=3025493377</steamWorkshopUrl>
+        </li>
+    </modDependencies>
+    <loadAfter>
+        <li>brrainz.harmony</li>
+        <li>Ludeon.RimWorld</li>
+        <li>Ludeon.RimWorld.Royalty</li>
+        <li>OskarPotocki.VanillaFactionsExpanded.Core</li>
+        <li>VFEEmpire</li>
+        <li>OskarPotocki.VFE.Deserters</li>
+    </loadAfter>
+    <description>Allows assassination targets from Vanilla Factions Expanded - Deserters to be recruited as colonists while still counting as a successful assassination, granting all mission rewards and progressing the deserter plotline.
+
+Features:
+- Successfully recruiting an assassination target completes the plot mission with Success.
+- All rewards and Deserter Network progression are awarded automatically.
+- Safely captures targets without failing the mission when leaving the site in player custody.
+- Configurable in Mod Options (e.g. Option to also count enslavement).
+- Safe to add to existing saves.
+    </description>
+</ModMetaData>
