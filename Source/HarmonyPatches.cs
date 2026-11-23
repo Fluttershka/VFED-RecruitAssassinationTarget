@@ -1,5 +1,6 @@
-using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using HarmonyLib;
 using RimWorld;
 using Verse;
@@ -12,7 +13,7 @@ namespace VFED_RecruitAssassinationTarget
         static HarmonyPatches()
         {
             var harmony = new Harmony("Kuwah.VFED.RecruitAssassinationTarget");
-            harmony.PatchAll();
+            harmony.PatchAll(Assembly.GetExecutingAssembly());
             Log.Message("[VFED - Recruit As Assassination] Patches initialized successfully.");
         }
     }
@@ -21,72 +22,93 @@ namespace VFED_RecruitAssassinationTarget
     public static class Patch_QuestUtility_SendQuestTargetSignals
     {
         [HarmonyPrefix]
-        public static bool Prefix(List<string> questTags, string signalPart, SignalArgs args)
+        public static bool Prefix(ref List<string> questTags, string signalPart, SignalArgs args)
         {
-            if (signalPart == "LeftMap" && VFED_RecruitMod.Settings.preventPrematureLeftMap)
+            if (signalPart != "LeftMap" || questTags.NullOrEmpty() || !VFED_RecruitMod.PreventPrematureLeftMap)
             {
-                Pawn subject = null;
-                if (args.TryGetArg("SUBJECT", out Pawn p1))
+                return true;
+            }
+
+            Pawn subject = null;
+            if (args.TryGetArg("SUBJECT", out Pawn p1))
+            {
+                subject = p1;
+            }
+            else if (args.Args != null)
+            {
+                foreach (var arg in args.Args)
                 {
-                    subject = p1;
-                }
-                else if (args.Args != null)
-                {
-                    foreach (var arg in args.Args)
+                    if (arg.arg is Pawn p2)
                     {
-                        if (arg.arg is Pawn p2)
-                        {
-                            subject = p2;
-                            break;
-                        }
+                        subject = p2;
+                        break;
                     }
                 }
-
-                if (subject != null && DesertersRecruitHelper.IsAssassinationTargetInPlayerCustody(subject))
-                {
-                    // Suppress LeftMap signal while the target is captive or in player custody
-                    return false;
-                }
             }
+
+            if (subject == null) return true;
+
+            var plot = DesertersRecruitHelper.GetPlotForTarget(subject);
+            if (plot == null || !DesertersRecruitHelper.IsPawnInPlayerCustody(subject))
+            {
+                return true;
+            }
+
+            // Filter out only the tag(s) belonging to this VFED plot quest so other quests on the pawn are unaffected.
+            string questPrefix = "Quest" + plot.quest.id + ".";
+            if (!questTags.Any(t => t != null && t.StartsWith(questPrefix)))
+            {
+                return true;
+            }
+
+            var filteredTags = questTags.Where(t => t == null || !t.StartsWith(questPrefix)).ToList();
+            if (filteredTags.Count == 0)
+            {
+                return false;
+            }
+
+            questTags = filteredTags;
             return true;
         }
     }
 
-    [HarmonyPatch(typeof(RecruitUtility), nameof(RecruitUtility.Recruit))]
+    [HarmonyPatch(typeof(RecruitUtility), nameof(RecruitUtility.Recruit), new[] { typeof(Pawn), typeof(Faction), typeof(Pawn) })]
     public static class Patch_RecruitUtility_Recruit
     {
         [HarmonyPostfix]
         public static void Postfix(Pawn pawn, Faction faction, Pawn recruiter)
         {
-            if (VFED_RecruitMod.Settings.countRecruit && faction == Faction.OfPlayer)
+            if (VFED_RecruitMod.CountRecruit && faction == Faction.OfPlayer && pawn != null && pawn.IsFreeNonSlaveColonist)
             {
-                DesertersRecruitHelper.Notify_PawnRecruitedAsColonist(pawn);
+                DesertersRecruitHelper.Notify_TargetNeutralizedByColony(pawn, viaEnslavement: false);
             }
         }
     }
 
-    [HarmonyPatch(typeof(Pawn), nameof(Pawn.SetFaction))]
+    [HarmonyPatch(typeof(Pawn), nameof(Pawn.SetFaction), new[] { typeof(Faction), typeof(Pawn) })]
     public static class Patch_Pawn_SetFaction
     {
         [HarmonyPostfix]
         public static void Postfix(Pawn __instance, Faction newFaction)
         {
-            if (VFED_RecruitMod.Settings.countRecruit && newFaction == Faction.OfPlayer && __instance.IsColonist && !__instance.IsSlave)
+            // IsFreeNonSlaveColonist ensures HostFaction == null and !IsSlave,
+            // preventing premature firing during Pawn_GuestTracker.SetGuestStatus(OfPlayer, GuestStatus.Slave).
+            if (VFED_RecruitMod.CountRecruit && newFaction == Faction.OfPlayer && __instance != null && __instance.IsFreeNonSlaveColonist)
             {
-                DesertersRecruitHelper.Notify_PawnRecruitedAsColonist(__instance);
+                DesertersRecruitHelper.Notify_TargetNeutralizedByColony(__instance, viaEnslavement: false);
             }
         }
     }
 
-    [HarmonyPatch(typeof(GenGuest), nameof(GenGuest.EnslavePrisoner))]
-    public static class Patch_GenGuest_EnslavePrisoner
+    [HarmonyPatch(typeof(GenGuest), nameof(GenGuest.TryEnslavePrisoner), new[] { typeof(Pawn), typeof(Pawn) })]
+    public static class Patch_GenGuest_TryEnslavePrisoner
     {
         [HarmonyPostfix]
-        public static void Postfix(Pawn warden, Pawn prisoner)
+        public static void Postfix(bool __result, Pawn warden, Pawn prisoner)
         {
-            if (VFED_RecruitMod.Settings.countEnslavement && prisoner != null)
+            if (__result && VFED_RecruitMod.CountEnslavement && prisoner != null && prisoner.IsSlaveOfColony)
             {
-                DesertersRecruitHelper.Notify_PawnRecruitedAsColonist(prisoner);
+                DesertersRecruitHelper.Notify_TargetNeutralizedByColony(prisoner, viaEnslavement: true);
             }
         }
     }

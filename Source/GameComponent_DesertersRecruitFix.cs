@@ -11,6 +11,12 @@ namespace VFED_RecruitAssassinationTarget
         {
         }
 
+        public override void LoadedGame()
+        {
+            base.LoadedGame();
+            CheckExistingColonistTargets();
+        }
+
         public override void GameComponentTick()
         {
             base.GameComponentTick();
@@ -23,23 +29,29 @@ namespace VFED_RecruitAssassinationTarget
 
         public static void CheckExistingColonistTargets()
         {
-            if (!VFED_RecruitMod.Settings.countRecruit) return;
+            bool checkRecruit = VFED_RecruitMod.CountRecruit;
+            bool checkEnslave = VFED_RecruitMod.CountEnslavement;
+            if (!checkRecruit && !checkEnslave) return;
+
             if (WorldComponent_Deserters.Instance == null || !WorldComponent_Deserters.Instance.Active) return;
 
             var plots = WorldComponent_Deserters.Instance.PlotMissions;
             if (plots.NullOrEmpty()) return;
 
-            foreach (var plot in plots)
+            foreach (var plot in plots.ToList())
             {
-                if (!plot.Complete && plot.quest != null && plot.quest.State == QuestState.Ongoing && plot.target != null)
-                {
-                    bool isTargetRecruited = plot.target.Faction == Faction.OfPlayer &&
-                                             (plot.target.IsColonist || (VFED_RecruitMod.Settings.countEnslavement && plot.target.IsSlaveOfColony));
+                if (!DesertersRecruitHelper.IsValidAssassinationPlot(plot)) continue;
 
-                    if (isTargetRecruited)
-                    {
-                        DesertersRecruitHelper.Notify_PawnRecruitedAsColonist(plot.target);
-                    }
+                Pawn target = DesertersRecruitHelper.GetPlotTargetPawn(plot);
+                if (target == null || target.Dead) continue;
+
+                if (checkRecruit && target.IsFreeNonSlaveColonist)
+                {
+                    DesertersRecruitHelper.Notify_TargetNeutralizedByColony(target, viaEnslavement: false);
+                }
+                else if (checkEnslave && target.IsSlaveOfColony)
+                {
+                    DesertersRecruitHelper.Notify_TargetNeutralizedByColony(target, viaEnslavement: true);
                 }
             }
         }

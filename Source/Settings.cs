@@ -24,6 +24,11 @@ namespace VFED_RecruitAssassinationTarget
     {
         public static VFED_RecruitSettings Settings;
 
+        public static bool CountRecruit => Settings?.countRecruit ?? true;
+        public static bool CountEnslavement => Settings?.countEnslavement ?? false;
+        public static bool PreventPrematureLeftMap => Settings?.preventPrematureLeftMap ?? true;
+        public static bool SendNotificationLetter => Settings?.sendNotificationLetter ?? true;
+
         public VFED_RecruitMod(ModContentPack content) : base(content)
         {
             Settings = GetSettings<VFED_RecruitSettings>();
@@ -31,6 +36,11 @@ namespace VFED_RecruitAssassinationTarget
 
         public override void DoSettingsWindowContents(Rect inRect)
         {
+            if (Settings == null)
+            {
+                Settings = GetSettings<VFED_RecruitSettings>();
+            }
+
             Listing_Standard listing = new Listing_Standard();
             listing.Begin(inRect);
 

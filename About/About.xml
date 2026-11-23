@@ -25,7 +25,7 @@
         <li>Ludeon.RimWorld</li>
         <li>Ludeon.RimWorld.Royalty</li>
         <li>OskarPotocki.VanillaFactionsExpanded.Core</li>
-        <li>VFEEmpire</li>
+        <li>OskarPotocki.VFE.Empire</li>
         <li>OskarPotocki.VFE.Deserters</li>
     </loadAfter>
     <description>Allows assassination targets from Vanilla Factions Expanded - Deserters to be recruited as colonists while still counting as a successful assassination, granting all mission rewards and progressing the deserter plotline.

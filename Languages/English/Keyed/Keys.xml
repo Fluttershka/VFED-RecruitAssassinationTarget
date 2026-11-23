@@ -7,9 +7,12 @@
     <VFED_Setting_CountEnslavement_Desc>If enabled, enslaving the assassination target as a slave will also count as a successful assassination.</VFED_Setting_CountEnslavement_Desc>
     <VFED_Setting_PreventLeftMap>Prevent premature mission failure while in custody</VFED_Setting_PreventLeftMap>
     <VFED_Setting_PreventLeftMap_Desc>Prevents the LeftMap failure signal from triggering when carrying a captured target in a player caravan, allowing you to bring them home safely to recruit.</VFED_Setting_PreventLeftMap_Desc>
-    <VFED_Setting_SendLetter>Send completion letter on recruitment</VFED_Setting_SendLetter>
-    <VFED_Setting_SendLetter_Desc>Sends a notification letter when the target is successfully recruited and the assassination quest completes.</VFED_Setting_SendLetter_Desc>
+    <VFED_Setting_SendLetter>Send completion letter on recruitment/enslavement</VFED_Setting_SendLetter>
+    <VFED_Setting_SendLetter_Desc>Sends a notification letter when the target is successfully recruited or enslaved and the assassination quest completes.</VFED_Setting_SendLetter_Desc>
 
+    <VFED_DefaultNobleTitle>Imperial noble</VFED_DefaultNobleTitle>
     <VFED_TargetRecruitedLetterTitle>Assassination Target Recruited: {PAWN_nameDef}</VFED_TargetRecruitedLetterTitle>
     <VFED_TargetRecruitedLetterText>The Imperial assassination target {PAWN_nameDef} ({TITLE}) has been recruited into our colony!\n\nThe Deserter Network considers this target permanently neutralized and removed from Imperial command. The mission is an overwhelming success, rewards have been granted, and further plot missions are now available.</VFED_TargetRecruitedLetterText>
+    <VFED_TargetEnslavedLetterTitle>Assassination Target Enslaved: {PAWN_nameDef}</VFED_TargetEnslavedLetterTitle>
+    <VFED_TargetEnslavedLetterText>The Imperial assassination target {PAWN_nameDef} ({TITLE}) has been enslaved by our colony!\n\nThe Deserter Network considers this target permanently neutralized and removed from Imperial command. The mission is an overwhelming success, rewards have been granted, and further plot missions are now available.</VFED_TargetEnslavedLetterText>
 </LanguageData>

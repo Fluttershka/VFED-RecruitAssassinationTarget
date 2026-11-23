@@ -7,9 +7,12 @@
     <VFED_Setting_CountEnslavement_Desc>如果开启，将刺杀目标奴役为奴隶时也会被视为刺杀成功。</VFED_Setting_CountEnslavement_Desc>
     <VFED_Setting_PreventLeftMap>俘虏押送期间防止任务判定失败</VFED_Setting_PreventLeftMap>
     <VFED_Setting_PreventLeftMap_Desc>当刺杀目标已被我方俘虏并押入远行队时，阻止触发离开地图失败信号，防止把俘虏带回基地时任务提前判定失败。</VFED_Setting_PreventLeftMap_Desc>
-    <VFED_Setting_SendLetter>发送招募成功通知信件</VFED_Setting_SendLetter>
-    <VFED_Setting_SendLetter_Desc>当目标被招募并完成刺杀任务时，在屏幕右侧发送一封完成信件。</VFED_Setting_SendLetter_Desc>
+    <VFED_Setting_SendLetter>发送任务完成通知信件</VFED_Setting_SendLetter>
+    <VFED_Setting_SendLetter_Desc>当目标被招募或奴役并完成刺杀任务时，在屏幕右侧发送一封完成信件。</VFED_Setting_SendLetter_Desc>
 
+    <VFED_DefaultNobleTitle>帝国贵族</VFED_DefaultNobleTitle>
     <VFED_TargetRecruitedLetterTitle>刺杀目标已被招募：{PAWN_nameDef}</VFED_TargetRecruitedLetterTitle>
     <VFED_TargetRecruitedLetterText>帝国刺杀目标 {PAWN_nameDef}（{TITLE}）已经被成功招募并加入了我们的殖民地！\n\n逃兵网络认为该目标已经彻底脱离帝国控制，刺杀任务圆满成功！相应的报酬与情报已经结算，后续刺杀行动也已解锁。</VFED_TargetRecruitedLetterText>
+    <VFED_TargetEnslavedLetterTitle>刺杀目标已被奴役：{PAWN_nameDef}</VFED_TargetEnslavedLetterTitle>
+    <VFED_TargetEnslavedLetterText>帝国刺杀目标 {PAWN_nameDef}（{TITLE}）已经被成功奴役并置于我们的控制之下！\n\n逃兵网络认为该目标已经彻底脱离帝国掌控，刺杀任务圆满成功！相应的报酬与情报已经结算，后续刺杀行动也已解锁。</VFED_TargetEnslavedLetterText>
 </LanguageData>
