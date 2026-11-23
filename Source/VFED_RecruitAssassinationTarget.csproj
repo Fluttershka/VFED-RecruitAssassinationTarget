@@ -1,16 +1,27 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <RimWorldVersion Condition="'$(RimWorldVersion)' == ''">1.6</RimWorldVersion>
-    <TargetFramework>net472</TargetFramework>
+    <RimWorldVersion Condition="'$(RimWorldVersion)' == ''">1.7</RimWorldVersion>
     <AssemblyName>VFED_RecruitAssassinationTarget</AssemblyName>
     <RootNamespace>VFED_RecruitAssassinationTarget</RootNamespace>
     <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <OutputPath>..\$(RimWorldVersion)\Assemblies\</OutputPath>
+    <GenerateDependencyFile>false</GenerateDependencyFile>
     <DebugType Condition="'$(Configuration)' == 'Release'">none</DebugType>
+    <Optimize Condition="'$(Configuration)' == 'Release'">true</Optimize>
+    <NuGetAudit>false</NuGetAudit>
+    <RimWorldDir Condition="'$(RimWorldDir)' == ''">D:\SteamLibrary\steamapps\common\RimWorld</RimWorldDir>
+    <WorkshopDir Condition="'$(WorkshopDir)' == ''">D:\SteamLibrary\steamapps\workshop\content\294100</WorkshopDir>
   </PropertyGroup>
 
-  <ItemGroup>
+  <!-- RimWorld 1.5 / 1.6 (.NET Framework 4.7.2 + UnityEngine.CoreModule + Harmony 2) -->
+  <PropertyGroup Condition="'$(RimWorldVersion)' != '1.7'">
+    <TargetFramework>net472</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(RimWorldVersion)' != '1.7'">
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="All" />
     <PackageReference Include="Lib.Harmony" Version="2.3.3" ExcludeAssets="runtime" />
   </ItemGroup>
@@ -19,16 +30,70 @@
   <ItemGroup Condition="'$(RimWorldVersion)' == '1.5'">
     <PackageReference Include="Krafs.Rimworld.Ref" Version="1.5.*" ExcludeAssets="runtime" />
     <Reference Include="VFED">
-      <HintPath>D:\SteamLibrary\steamapps\workshop\content\294100\3025493377\1.5\Assemblies\VFED.dll</HintPath>
+      <HintPath>$(WorkshopDir)\3025493377\1.5\Assemblies\VFED.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
 
-  <!-- RimWorld 1.6 (also loaded on RimWorld 1.7 via LoadFolders.xml, matching VFED) -->
+  <!-- RimWorld 1.6 -->
   <ItemGroup Condition="'$(RimWorldVersion)' == '1.6'">
     <PackageReference Include="Krafs.Rimworld.Ref" Version="1.6.*" ExcludeAssets="runtime" />
     <Reference Include="VFED">
-      <HintPath>D:\SteamLibrary\steamapps\workshop\content\294100\3025493377\1.6\Assemblies\VFED.dll</HintPath>
+      <HintPath>$(WorkshopDir)\3025493377\1.6\Assemblies\VFED.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+
+  <!-- RimWorld 1.7 (Waylith / .NET Core + UnityStubs + Harmony 1.7) -->
+  <PropertyGroup Condition="'$(RimWorldVersion)' == '1.7'">
+    <TargetFramework>net9.0</TargetFramework>
+    <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
+    <DefineConstants>$(DefineConstants);RIMWORLD_1_7</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(RimWorldVersion)' == '1.7'">
+    <Reference Include="System.Private.CoreLib">
+      <HintPath>$(RimWorldDir)\System.Private.CoreLib.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Runtime">
+      <HintPath>$(RimWorldDir)\System.Runtime.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Collections">
+      <HintPath>$(RimWorldDir)\System.Collections.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Linq">
+      <HintPath>$(RimWorldDir)\System.Linq.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="netstandard">
+      <HintPath>$(RimWorldDir)\netstandard.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="mscorlib">
+      <HintPath>$(RimWorldDir)\mscorlib.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(RimWorldDir)\Assembly-CSharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityStubs">
+      <HintPath>$(RimWorldDir)\UnityStubs.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Waylith">
+      <HintPath>$(RimWorldDir)\Waylith.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>$(WorkshopDir)\2009463077\1.7\Assemblies\0Harmony.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="VFED">
+      <HintPath>$(WorkshopDir)\3025493377\1.6\Assemblies\VFED.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
